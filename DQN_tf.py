@@ -79,14 +79,14 @@ def train(q_net,q_target,optimizer,batch_size,gamma,loss_list,Replay_time):
             # Q_target_value
             qtarget_out = q_target(s_next)
             
-            # qtarget_out = tf.reduce_max(qtarget_out,axis = 1,keepdims = True) # for DQN
+            qtarget_out = tf.reduce_max(qtarget_out,axis = 1,keepdims = True) # for DQN
 
-            a_target = tf.argmax(qa_out,axis = 1)
-            a_target = tf.reshape(tf.cast(a_target,dtype = tf.int32),shape = (batch_size,1))
-            a_target_index = tf.expand_dims(tf.range(a_target.shape[0]),axis = 1)
-            a_target_index = tf.concat([a_target_index,a_target],axis = 1)
-            qtarget_out = tf.gather_nd(qtarget_out,a_target_index)
-            qtarget_out = tf.expand_dims(qtarget_out,axis=1)                  # for DDQN
+            # a_target = tf.argmax(qa_out,axis = 1)
+            # a_target = tf.reshape(tf.cast(a_target,dtype = tf.int32),shape = (batch_size,1))
+            # a_target_index = tf.expand_dims(tf.range(a_target.shape[0]),axis = 1)
+            # a_target_index = tf.concat([a_target_index,a_target],axis = 1)
+            # qtarget_out = tf.gather_nd(qtarget_out,a_target_index)
+            # qtarget_out = tf.expand_dims(qtarget_out,axis=1)                  # for DDQN
 
             q_t = r + gamma*qtarget_out*done_flag
 

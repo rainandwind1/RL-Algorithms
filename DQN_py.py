@@ -81,11 +81,13 @@ def train(q_net,q_target,batch_size,gamma,learning_rate,loss_list,Replay_time):
 
 
         # Q_target value
-        a_target = torch.argmax(qa_out,dim = 1)
-        a_target = torch.reshape(torch.LongTensor(a_target),shape=(batch_size,1))
-        a_target_index = torch.LongTensor(a_target)
+        # a_target = torch.argmax(qa_out,dim = 1)
+        # a_target = torch.reshape(torch.LongTensor(a_target),shape=(batch_size,1))
+        # a_target_index = torch.LongTensor(a_target)
+        # qtarget_out = q_target(s_next).detach()
+        # qtarget_out = torch.gather(qtarget_out,1,a_target_index)
         qtarget_out = q_target(s_next).detach()
-        qtarget_out = torch.gather(qtarget_out,1,a_target_index)
+        qtarget_out = torch.max(qtarget_out,dim=1)
 
 
         q_t = r + gamma*qtarget_out*done_flag
