@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 class DDQN(nn.Module):
     # 动作值函数网络
-    def __init__(self,input_size,output_size,memory_len):
+    def __init__(self, input_size, output_size, memory_len):
         super(DDQN,self).__init__()
         self.output_size = output_size
         self.input_size = input_size
@@ -36,7 +36,7 @@ class DDQN(nn.Module):
         output = self.net(inputs)
         return output
 
-    def sample_action(self,state,epsilon):
+    def sample_action(self, state, epsilon):
         input = torch.tensor(state,dtype=torch.float32)
         input = input.squeeze(0)
         action_value = self(input)
@@ -48,10 +48,10 @@ class DDQN(nn.Module):
             return np.random.randint(0,self.output_size)
         
     # 经验回放部分
-    def save_memory(self,transition):
+    def save_memory(self, transition):
         self.memory_list.append(transition)
 
-    def sample_memory(self,n):
+    def sample_memory(self, n):
         batch = random.sample(self.memory_list,n)
         s_ls,a_ls,r_ls,s_next_ls,done_mask_ls = [],[],[],[],[]
         for trans in batch:
@@ -69,9 +69,9 @@ class DDQN(nn.Module):
 
 
 # 训练函数
-def train(q_net,q_target,batch_size,gamma,learning_rate,loss_list,Replay_time):
-    optimizer = optim.Adam(q_net.parameters(),lr = learning_rate)
-    huber = nn.SmoothL1Loss()
+def train(q_net, q_target, optimizer, loss, batch_size, gamma, learning_rate, loss_list, Replay_time):
+    # optimizer = optim.Adam(q_net.parameters(),lr = learning_rate)
+    # huber = nn.SmoothL1Loss()
     for i in range(Replay_time):
         s,a,r,s_next,done_flag = q_net.sample_memory(batch_size)
         # Q_value
