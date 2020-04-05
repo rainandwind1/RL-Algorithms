@@ -4,7 +4,7 @@ from torch import nn,optim
 import random
 import collections
 import matplotlib.pyplot as plt
-
+import gym
 
 
 class ActorCritic(nn.Module):
@@ -25,7 +25,7 @@ class ActorCritic(nn.Module):
         self.memory = []
 
     def forward(self, inputs):
-        inputs = torch.tensor(inputs,dtype=torch.float32,requires_grad=True)
+        inputs = torch.tensor(inputs,dtype=torch.float32)
         inputs = inputs.unsqueeze(0)
         a_prob = nn.Softmax(self.actor(inputs),dim=1)
         v = self.critic(inputs)
@@ -47,13 +47,13 @@ class ActorCritic(nn.Module):
             return action_choice, prob[0][action_choice]
 
 
-def train(net,optimizer,gamma,loss_list):
-    for prob,reward,s,s_next in net.memory:
-        s_next = torch.tensor(s_next,dtype=torch.float32,requires_grad=True)
+def train(net,optimizer,loss_fn,gamma,loss_list):
+    for prob,reward,s,s_next,done_flag in net.memory:
+        s_next = torch.tensor(s_next,dtype=torch.float32)
         s_next = s_next.unsqueeze(0)
-        s = torch.tensor(s,dtype=torch.float32,requires_grad=True)
+        s = torch.tensor(s,dtype=torch.float32)
         s = s.unsqueeze(0)
-        V_next = reward + gamma*net.critic(s_next)
+        V_next = reward + gamma*net.critic(s_next)*done_flag
         V_s = net.critic(s)
         A = V_next - V_s
         loss_a = -torch.log(prob)*A
@@ -107,25 +107,20 @@ if __name__ == "__main__":
     print("Action space:",env.action_space)
 
     # 超参数设置
-    gamma = 0.99
-    learning_rate = 0.008
+    gamma = 0.95
+    learning_rate = 0.001
     output_size = 2
     state_size = 4
-    memory_len = 10000
-    epoch_num = 1200   # 回合数
+    epoch_num = 500   # 回合数
     max_steps = 400   # 最大步数
-    update_target_interval = 50 # 目标网络更新间隔
-    batch_size = 64
     train_flag = False
-    train_len = 2000
 
     # 初始化
-    Q_value = DDQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
-    Q_target =  DDQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
+    AC = ActorCritic(input_size = state_size,output_size=output_size)
     score_list = []
     loss_list = []
-    optimizer = optim.Adam(Q_value.parameters(),lr = learning_rate)
-    huber = nn.SmoothL1Loss()
+    optimizer = optim.Adam(AC.parameters(),lr = learning_rate)
+    huber = nn.MSELoss()
 
 
 
@@ -135,25 +130,18 @@ if __name__ == "__main__":
         score = 0
         for j in range(max_steps):
             env.render()
-            a = Q_value.sample_action(s,epsilon=epsilon)
+            a, a_prob = AC.sample_action(s,epsilon=epsilon)
             s_next,reward,done,info = env.step(a)
             done_flag = 0.0 if done else 1.0
-            Q_value.save_memory((s,a,reward/100,s_next,done_flag))
+            AC.save_memory((a_prob,reward/100,s,s_next,done_flag))
             score += reward
             s = s_next
             if done:
+                train_flag = True
+                train(AC,optimizer,huber,gamma,loss_list)
                 break
         score_list.append(score)
-        if len(Q_value.memory_list) >= train_len:
-            train_flag = True
-            train(Q_value,Q_target,optimizer,huber,batch_size,gamma,loss_list,Replay_time=20)
-        # 更新目标网络
-        if (i+1) % update_target_interval == 0 and i > 0:
-            Q_target.load_state_dict(Q_value.state_dict())
         print("{} epoch score: {}  training: {}".format(i+1,score,train_flag))
-
-
-
     plot_curse(score_list,loss_list)
     env.close()
 
