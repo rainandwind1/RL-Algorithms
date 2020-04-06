@@ -111,7 +111,7 @@ class DQN(nn.Module):
 
 
 # 训练函数
-def train(Q_value, Q_target, replay_buffer, optimizer, loss, gamma, loss_list, Replay_time=20):
+def train(Q_value, Q_target, replay_buffer, optimizer, batch_size, loss, gamma, loss_list, Replay_time=20):
     for i in range(Replay_time):
         weight_ratio, prior_indices, batch_samples = replay_buffer.replay_memory(batch_size)
         weight_ratio = torch.tensor(weight_ratio,dtype=torch.float32)
@@ -216,7 +216,7 @@ if __name__ == "__main__":
         score_list.append(score)
         if replay_buff.len >= replay_len:
             train_flag = True
-            train(Q_value,Q_target,replay_buff,optimizer,huber,gamma,loss_list,Replay_time=20)
+            train(Q_value,Q_target,replay_buff,optimizer, batch_size, huber,gamma,loss_list,Replay_time=20)
         # 更新目标网络
         if (i+1) % update_target_interval == 0 and i > 0:
             Q_target.load_state_dict(Q_value.state_dict())
