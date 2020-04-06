@@ -11,11 +11,10 @@ import matplotlib.pyplot as plt
 # Replay_time = 30
 
 
-# DDQN Double Deep Q-learning
-class DDQN(keras.Model):
+class DQN(keras.Model):
     # 动作值函数网络
     def __init__(self,output_size,memory_len):
-        super(DDQN,self).__init__()
+        super(DQN,self).__init__()
         self.output_size = output_size
         self.fc1 = layers.Dense(128,kernel_initializer = "random_uniform")
         self.fc2 = layers.Dense(256,kernel_initializer = "random_uniform")

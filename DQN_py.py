@@ -9,10 +9,10 @@ import gym
 
 
 
-class DDQN(nn.Module):
+class DQN(nn.Module):
     # 动作值函数网络
     def __init__(self, input_size, output_size, memory_len):
-        super(DDQN,self).__init__()
+        super(DQN,self).__init__()
         self.output_size = output_size
         self.input_size = input_size
         self.net = nn.Sequential(
@@ -136,8 +136,8 @@ if __name__ == "__main__":
     train_len = 2000
 
     # 初始化
-    Q_value = DDQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
-    Q_target =  DDQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
+    Q_value = DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
+    Q_target =  DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
     score_list = []
     loss_list = []
     optimizer = optim.Adam(Q_value.parameters(),lr = learning_rate)
