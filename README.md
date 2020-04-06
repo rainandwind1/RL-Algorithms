@@ -1,8 +1,8 @@
-"# RL-Algorithms" tensorflow / pytorch 
-DQN
-DDQN
-
-REINFORCE
-DDPG
-Actor Critic
-A3C
+# RL-Algorithms 
+`tensorflow / pytorch version`
+<br>DQN
+<br>DDQN
+<br>REINFORCE
+<br>DDPG
+<br>Actor Critic
+<br>A3C
