@@ -39,7 +39,7 @@ class DDQN(nn.Module):
 
     def sample_action(self, state, epsilon):
         input = torch.tensor(state,dtype=torch.float32)
-        input = input.squeeze(0)
+        input = input.unsqueeze(0)
         action_value = self(input)
         coin = np.random.uniform()
         if coin > epsilon:

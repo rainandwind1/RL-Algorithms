@@ -38,7 +38,7 @@ class DQN(nn.Module):
 
     def sample_action(self,state, epsilon):
         input = torch.tensor(state,dtype=torch.float32)
-        input = input.squeeze(0)
+        # input = input.unsqueeze(0)
         action_value = self(input)
         coin = np.random.uniform()
         if coin > epsilon:
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
     # 超参数设置
     gamma = 0.99
-    learning_rate = 0.008
+    learning_rate = 0.001
     output_size = 2
     state_size = 4
     memory_len = 10000
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     update_target_interval = 50 # 目标网络更新间隔
     batch_size = 64
     train_flag = False
-    train_len = 2000
+    train_len = 1000
 
     # 初始化
     Q_value = DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
