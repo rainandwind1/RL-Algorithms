@@ -62,7 +62,7 @@ def train(net,optimizer,loss_fn,gamma,loss_list):
         optimizer.zero_grad()
         losses.backward(retain_graph=True)
         optimizer.step()
-        net.memory = []
+    net.memory = []
 
 
 
