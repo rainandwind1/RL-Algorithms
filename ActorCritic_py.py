@@ -58,10 +58,10 @@ def train(net,optimizer,loss_fn,gamma,loss_list):
         A = V_next - V_s
         loss_a = -torch.log(prob)*A
         losses = loss_a + 0.5*A**2
-        loss_list.append(losses)
-        optimizer.zero_grad()
-        losses.backward(retain_graph=True)
-        optimizer.step()
+    loss_list.append(losses)
+    optimizer.zero_grad()
+    losses.backward()
+    optimizer.step()
     net.memory = []
 
 

@@ -108,20 +108,22 @@ def runprocess(envs, model, thread_id, s_t, optimizer):
 
 
 def train_net(model, optimizer, trans_list, return_list, loss_list):
+    loss = 0.
     for num, trans in enumerate(trans_list):
         s, a, r, s_next, done_flag = trans
         policy, critic = model(s)
-        # advantage = r + GAMMA*model(s_next)[1]*done_flag - critic
+        advantage = r + GAMMA*model(s_next)[1]*done_flag - critic
         #
-        advantage = return_list[num] - critic
+        # advantage = return_list[num] - critic
         loss_critic = advantage**2
         loss_policy = torch.log(policy[a])*advantage
-        loss = -Policy_coef * loss_policy + Critic_coef * loss_critic
+        loss += -Policy_coef * loss_policy + Critic_coef * loss_critic
 
-        loss_list.append(loss)
-        optimizer.zero_grad()
-        loss.backward(retain_graph=True)
-        optimizer.step()
+
+    loss_list.append(loss)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
 
 
 
