@@ -30,10 +30,7 @@ import random
 # a = random.choice(range(5))
 # action_p = [0.1,0.9]
 # a = np.random.choice(range(2),1,p=action_p)
-# print(int(a))
-pp = torch.tensor([0.1,0.9], dtype = torch.float32)
-a = torch.multinomial(pp, 1)
-print(a.numpy()[0])
-
-
+loss_m = np.load("E:\Grade_two\作业\强化学习\作业二\FTG4.50_rlhomework\info" + "\Loss_AC_ep" + str(60) + ".npy")
+loss_list = loss_m.tolist()
+print(loss_list)
 

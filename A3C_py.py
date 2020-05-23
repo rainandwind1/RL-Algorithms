@@ -112,11 +112,12 @@ def train_net(model, optimizer, trans_list, return_list, loss_list):
     for num, trans in enumerate(trans_list):
         s, a, r, s_next, done_flag = trans
         policy, critic = model(s)
-        advantage = r + GAMMA*model(s_next)[1]*done_flag - critic
+        q_t = r + GAMMA*model(s_next)[1]*done_flag
+        advantage = q_t.detach() - critic
         #
         # advantage = return_list[num] - critic
         loss_critic = advantage**2
-        loss_policy = torch.log(policy[a])*advantage
+        loss_policy = torch.log(policy[a])*advantage.detach()
         loss += -Policy_coef * loss_policy + Critic_coef * loss_critic
 
 

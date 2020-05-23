@@ -55,8 +55,8 @@ def train(net,optimizer,loss_fn,gamma,loss_list):
         s = s.unsqueeze(0)
         V_next = reward + gamma*net.critic(s_next)*done_flag
         V_s = net.critic(s)
-        A = V_next - V_s
-        loss_a = -torch.log(prob)*A
+        A = V_next.detach() - V_s
+        loss_a = -torch.log(prob)*A.detach()
         losses = loss_a + 0.5*A**2
     loss_list.append(losses)
     optimizer.zero_grad()
