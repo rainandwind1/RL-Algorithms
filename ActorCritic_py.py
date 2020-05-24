@@ -48,6 +48,7 @@ class ActorCritic(nn.Module):
 
 
 def train(net,optimizer,loss_fn,gamma,loss_list):
+    losses = 0.
     for prob,reward,s,s_next,done_flag in net.memory:
         s_next = torch.tensor(s_next,dtype=torch.float32)
         s_next = s_next.unsqueeze(0)
@@ -57,7 +58,7 @@ def train(net,optimizer,loss_fn,gamma,loss_list):
         V_s = net.critic(s)
         A = V_next.detach() - V_s
         loss_a = -torch.log(prob)*A.detach()
-        losses = loss_a + 0.5*A**2
+        losses += loss_a + 0.5*A**2
     loss_list.append(losses)
     optimizer.zero_grad()
     losses.backward()
@@ -111,7 +112,7 @@ if __name__ == "__main__":
     learning_rate = 0.001
     output_size = 2
     state_size = 4
-    epoch_num = 500   # 回合数
+    epoch_num = 10000   # 回合数
     max_steps = 400   # 最大步数
     train_flag = False
 
@@ -125,11 +126,11 @@ if __name__ == "__main__":
 
 
     for i in range(epoch_num):
-        epsilon = max(0.01,0.16-0.01*(i)/200)
+        epsilon = max(0.01,0.1-0.01*(i)/200)
         s = env.reset()
         score = 0
         for j in range(max_steps):
-            env.render()
+            # env.render()
             a, a_prob = AC.sample_action(s,epsilon=epsilon)
             s_next,reward,done,info = env.step(a)
             done_flag = 0.0 if done else 1.0
