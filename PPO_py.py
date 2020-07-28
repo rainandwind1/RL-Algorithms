@@ -75,7 +75,7 @@ def train(model, loss_fn, loss_list, score_list):
 
         policy = model.get_policy(s, 1)
         policy = policy.gather(1, a)
-        ratio = torch.exp(torch.log(policy) - torch.log(a_prob)) # 重要性采样比率？
+        ratio = torch.exp(torch.log(policy) - torch.log(a_prob))
 
         surr1 = ratio * advantage
         surr2 = torch.clamp(ratio, 1-EPS_CLIP, 1+EPS_CLIP)*advantage
@@ -87,7 +87,7 @@ def train(model, loss_fn, loss_list, score_list):
 
 
 # Hyperparameters
-LEARNING_RATE = 0.0005
+LEARNING_RATE = 0.001
 GAMMA = 0.98
 LAMBDA = 0.95
 EPS_CLIP = 0.1
@@ -106,7 +106,7 @@ if __name__ == "__main__":
         done = False
         while not done:
             for step in range(T_HORIZON):
-                env.render()
+                # env.render()
                 a_prob = model.get_policy(torch.from_numpy(obs).float(), 0)
                 m = Categorical(a_prob)
                 a = m.sample().item()

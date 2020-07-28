@@ -144,7 +144,7 @@ if __name__ == "__main__":
 
                 total_step += 1
                 score += r
-                if total_step > 3000:
+                if total_step > 2000:
                     train_flag = True
                     train(adver_agent, adver_target, memory, GAMMA, BATCH_SIZE, state)
                 if done:
