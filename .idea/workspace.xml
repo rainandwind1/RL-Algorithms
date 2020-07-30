@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0b7148e-800b-44c3-a419-a58fb49fa3d1" name="Default" comment="" />
+    <list default="true" id="a0b7148e-800b-44c3-a419-a58fb49fa3d1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RL_2_py.py" afterPath="$PROJECT_DIR$/RL_2_py.py" />
+    </list>
     <ignored path="algorithms_RL.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,96 +22,32 @@
     <favorites_list name="algorithms_RL" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.54741836">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="ICM_DQN_tf.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/ICM_DQN_tf.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-899">
-                  <caret line="110" column="67" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="67" />
-                  <folding>
-                    <element signature="e#0#10#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="PPO_tf.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/PPO_tf.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3185">
-                  <caret line="91" column="14" selection-start-line="91" selection-start-column="14" selection-end-line="91" selection-end-column="14" />
-                  <folding>
-                    <element signature="e#0#23#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="RND_py.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/RND_py.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="129" column="12" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="12" />
-                  <folding>
-                    <element signature="e#0#10#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="RL_2_py.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/RL_2_py.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="96">
-                  <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#0#12#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="DDQN_tf.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/DDQN_tf.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-66">
-                  <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="PPO_py.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/PPO_py.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-2280">
-                  <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-                  <folding>
-                    <element signature="e#0#10#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="A3C_py.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/A3C_py.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="370">
-                  <caret line="102" column="45" selection-start-line="102" selection-start-column="45" selection-end-line="102" selection-end-column="45" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ICM_DQN_tf.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ICM_DQN_tf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="19">
+              <caret line="110" column="67" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="67" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="A3c_right.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/A3c_right.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2245">
+              <caret line="134" column="14" selection-start-line="134" selection-start-column="14" selection-end-line="134" selection-end-column="14" />
+              <folding>
+                <element signature="e#24#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -138,13 +77,14 @@
         <option value="$PROJECT_DIR$/RND.py" />
         <option value="$PROJECT_DIR$/RND_py.py" />
         <option value="$PROJECT_DIR$/RL_2_py.py" />
+        <option value="$PROJECT_DIR$/A3c_right.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
+    <option name="width" value="1932" />
     <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -175,51 +115,17 @@
       <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="algorithms_RL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="algorithms_RL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="algorithms_RL" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
+        <subPane />
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Conference_On_Game_2020/zpp" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/Grade_two/作业/强化学习/algorithms_RL/A3C_tf.py" />
   </component>
-  <component name="RunManager" selected="Python.RND_py">
-    <configuration default="false" name="Robust_RL_py" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="algorithms_RL" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Robust_RL_py.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.A3c_right">
     <configuration default="false" name="PPO_tf" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -284,6 +190,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="algorithms_RL" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RND_py.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="A3c_right" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="algorithms_RL" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/A3c_right.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -423,19 +346,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.Robust_RL_py" />
-      <item index="1" class="java.lang.String" itemvalue="Python.PPO_tf" />
-      <item index="2" class="java.lang.String" itemvalue="Python.PPO_py" />
-      <item index="3" class="java.lang.String" itemvalue="Python.A3C_py" />
-      <item index="4" class="java.lang.String" itemvalue="Python.RND_py" />
+      <item index="0" class="java.lang.String" itemvalue="Python.PPO_tf" />
+      <item index="1" class="java.lang.String" itemvalue="Python.PPO_py" />
+      <item index="2" class="java.lang.String" itemvalue="Python.A3C_py" />
+      <item index="3" class="java.lang.String" itemvalue="Python.RND_py" />
+      <item index="4" class="java.lang.String" itemvalue="Python.A3c_right" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.RND_py" />
-        <item index="1" class="java.lang.String" itemvalue="Python.A3C_py" />
-        <item index="2" class="java.lang.String" itemvalue="Python.PPO_py" />
-        <item index="3" class="java.lang.String" itemvalue="Python.PPO_tf" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Robust_RL_py" />
+        <item index="0" class="java.lang.String" itemvalue="Python.A3c_right" />
+        <item index="1" class="java.lang.String" itemvalue="Python.RND_py" />
+        <item index="2" class="java.lang.String" itemvalue="Python.A3C_py" />
+        <item index="3" class="java.lang.String" itemvalue="Python.PPO_py" />
+        <item index="4" class="java.lang.String" itemvalue="Python.PPO_tf" />
       </list>
     </recent_temporary>
   </component>
@@ -453,17 +376,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1932" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14752372" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2991453" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28850326" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30802602" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26789588" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27403846" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3991323" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -500,27 +423,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Actor_Critic_tf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A3C_tf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/A3C_py.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1330">
@@ -724,13 +626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/A3C_tf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_ipython_console_011.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="576">
@@ -749,9 +644,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="7" column="9" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -759,7 +651,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1425">
           <caret line="81" column="29" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -767,7 +658,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1083">
           <caret line="66" column="40" selection-start-line="66" selection-start-column="40" selection-end-line="66" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -775,9 +665,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1064">
           <caret line="62" column="55" selection-start-line="62" selection-start-column="55" selection-end-line="62" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -785,15 +672,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
           <caret line="77" column="26" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DDQN_tf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-66">
-          <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -801,9 +679,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="665">
           <caret line="42" column="43" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#12#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -811,9 +686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3780">
           <caret line="140" column="56" selection-start-line="140" selection-start-column="56" selection-end-line="140" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#12#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -821,37 +693,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A3C_py.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="102" column="45" selection-start-line="102" selection-start-column="45" selection-end-line="102" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PPO_tf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3185">
-          <caret line="91" column="14" selection-start-line="91" selection-start-column="14" selection-end-line="91" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PPO_py.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2280">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -863,19 +704,87 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/REINFORCE_py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A3C_tf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1373">
+          <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/RND_py.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="129" column="12" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="12" />
+        <state relative-caret-position="3174">
+          <caret line="138" column="21" selection-start-line="138" selection-start-column="21" selection-end-line="138" selection-end-column="21" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A3C_py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2600">
+          <caret line="140" column="18" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RL_2_py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PPO_py.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="98" column="33" selection-start-line="98" selection-start-column="33" selection-end-line="98" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#10#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DDQN_tf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PPO_tf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="91" column="14" selection-start-line="91" selection-start-column="14" selection-end-line="91" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#23#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ICM_DQN_tf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-899">
+        <state relative-caret-position="19">
           <caret line="110" column="67" selection-start-line="110" selection-start-column="30" selection-end-line="110" selection-end-column="67" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -883,12 +792,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RL_2_py.py">
+    <entry file="file://$PROJECT_DIR$/REINFORCE_tf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A3c_right.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2245">
+          <caret line="134" column="14" selection-start-line="134" selection-start-column="14" selection-end-line="134" selection-end-column="14" />
+          <folding>
+            <element signature="e#24#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
