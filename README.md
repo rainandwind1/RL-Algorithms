@@ -14,3 +14,6 @@
 <br>Robust RL(DQN)
 <br>RND PPO
 <br>RL2 
+
+<br> Distributed RL
+<br> IQN
