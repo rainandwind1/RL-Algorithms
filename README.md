@@ -15,5 +15,5 @@
 <br>RND PPO
 <br>RL2 
 
-<br>**Distributed RL
+<br>***Distributed RL
 <br>IQN
