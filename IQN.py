@@ -1,122 +1,108 @@
 import torch
-from  torch import optim,nn
+from torch import optim,nn
 import torch.nn.functional as F
 import numpy as np
 import random
 import collections
 import matplotlib.pyplot as plt
 import gym
+import math
 
 
-
-class DQN(nn.Module):
-    # 动作值函数网络
-    def __init__(self, input_size, output_size, memory_len):
-        super(DQN,self).__init__()
-        self.output_size = output_size
-        self.input_size = input_size
+class IQN(nn.Module):
+    def __init__(self, args):
+        super(IQN, self).__init__()
+        self.input_size, self.output_size, self.lr, self.device = args
         self.net = nn.Sequential(
-            nn.Linear(self.input_size,128,bias=True),
+            nn.Linear(self.input_size, 128),
             nn.ReLU(),
-            nn.Linear(128,256,bias=True),
-            nn.ReLU(),
-            nn.Linear(256,256,bias=True),
-            nn.ReLU(),
-            nn.Linear(256,self.output_size,bias=True)
+            nn.Linear(128, 32),
+            nn.ReLU()
         )
-        for i in self.net:
-            if isinstance(i,nn.Linear):
-                nn.init.kaiming_normal_(i.weight)
-                nn.init.constant_(i.bias,0.1)
-        print("Net Weight init successful!")
-        self.memory_len = memory_len
-        self.memory_list = collections.deque(maxlen=memory_len)
+        self.phi = nn.Linear(1, 32, bias = False)
+        self.phi_bias = nn.Parameter(torch.rand(32), requires_grad = True)
+        self.fc = nn.Linear(32, 64)
+        self.full_net = nn.Linear(64, self.output_size)
+        self.optimizer = optim.Adam(self.parameters(), lr = self.lr)
 
-    def forward(self,inputs, training=None):
-        output = self.net(inputs)
-        return output
+    def forward(self, inputs, toi_num = 64):
+        toi = torch.FloatTensor([[np.random.uniform()] for _ in range(toi_num)]).to(self.device)
+        Num = torch.FloatTensor([i for i in range(64)]).to(self.device)
+        cos_op = torch.cos(toi * Num * np.pi).unsqueeze(-1)                                        # toi_num * n(64) * 1
+        q_val_embed = self.net(inputs).unsqueeze(1)                                                 # batch * 1 * embed_opsize
+        phi = F.relu(self.phi(cos_op).mean(1) + self.phi_bias.unsqueeze(0)).unsqueeze(0)                    # 1 * toi_num * embed_opsize
+        z_val_embed = F.relu(self.fc(q_val_embed * phi))
+        z_val = self.full_net(z_val_embed).transpose(1, 2)                                           # batch * action_size * toi
+        return z_val, toi
 
-    def sample_action(self,state, epsilon):
-        input = torch.tensor(state,dtype=torch.float32)
-        # input = input.unsqueeze(0)
-        action_value = self(input)
-        coin = np.random.uniform()
+    def choose_action(self, state, epsilon, samples_K = 32):
+        coin = np.random.rand()
         if coin > epsilon:
-            action = int(torch.argmax(action_value))
-            return action
+            inputs = torch.FloatTensor(state).to(self.device)
+            z_val = self(inputs, samples_K)[0]
+            z_val = z_val.squeeze(0)
+            action = int(torch.argmax(z_val.mean(-1), -1))
         else:
-            return np.random.randint(0,self.output_size)
-        
-    # 经验回放部分
-    def save_memory(self, transition):
-        self.memory_list.append(transition)
+            action = random.choice(range(self.output_size))
+        return action
 
-    def sample_memory(self, n):
-        batch = random.sample(self.memory_list,n)
-        s_ls,a_ls,r_ls,s_next_ls,done_mask_ls = [],[],[],[],[]
-        for trans in batch:
-            s,a,r,s_next,done_flag = trans
+
+class Replaybuffer():
+    def __init__(self, args):
+        self.mem_len, self.device = args
+        self.buffer = collections.deque(maxlen = self.mem_len)
+
+    def save_memory(self, transition):
+        self.buffer.append(transition)
+
+    def sample_memory(self, batch_size):
+        sample_batch = random.sample(self.buffer, batch_size)
+        s_ls, a_ls, r_ls, s_next_ls, done_mask_ls = ([] for i in range(5))
+        for trans in sample_batch:
+            s, a, r, s_next, done_flag = trans
             s_ls.append(s)
             a_ls.append([a])
             r_ls.append([r])
             s_next_ls.append(s_next)
             done_mask_ls.append([done_flag])
-        return torch.tensor(s_ls,dtype=torch.float32),\
-            torch.tensor(a_ls,dtype=torch.int64),\
-            torch.tensor(r_ls,dtype=torch.float32),\
-            torch.tensor(s_next_ls,dtype=torch.float32),\
-            torch.tensor(done_mask_ls,dtype=torch.float32)
+        return torch.tensor(s_ls,dtype=torch.float32).to(self.device),\
+            torch.tensor(a_ls,dtype=torch.int64).to(self.device),\
+            torch.tensor(r_ls,dtype=torch.float32).to(self.device),\
+            torch.tensor(s_next_ls,dtype=torch.float32).to(self.device),\
+            torch.tensor(done_mask_ls,dtype=torch.float32).to(self.device)
 
 
 # 训练函数
-def train(q_net, q_target, optimizer, losses, batch_size, gamma, loss_list, Replay_time):
-    for i in range(Replay_time):
-        s,a,r,s_next,done_flag = q_net.sample_memory(batch_size)
-        # Q_value
-        qa_out = q_net(s)
-        a_index = torch.LongTensor(a)
-        q_a = torch.gather(qa_out,1,a_index)
-        # Q_target value
-        qtarget_out = q_target(s_next).detach()
-        qtarget_out = torch.max(qtarget_out,dim=1,keepdim=True)[0]
-        q_t = r + gamma*qtarget_out*done_flag
-
-        # 损失与优化
-        loss = losses(q_a, q_t)
-        loss_list.append(loss)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-
-
-# 绘制结果
-def plot_curse(target_list, loss_list):
-    figure1 = plt.figure()
-    plt.grid()
-    X = []
-    for i in range(len(target_list)):
-        X.append(i)
-    plt.plot(X,target_list,'-r')
-    plt.xlabel('epoch')
-    plt.ylabel('score')
-
-    figure2 = plt.figure()
-    plt.grid()
-    X = []
-    for i in range(len(loss_list)):
-        X.append(i)
-    plt.plot(X,loss_list,'-b')
-    plt.xlabel('train step')
-    plt.ylabel('loss')
-    plt.show()
-
+def train(z_net, z_target, replaybuffer, batch_size, gamma, N, N_, coef_k = None, rou = None):
+    s, a, r, s_next, done_flag = replaybuffer.sample_memory(batch_size)
+    z, toi = z_net(s, N)
+    z = torch.stack([z[i].index_select(0, a[i]) for i in range(batch_size)]).squeeze(1)
+    
+    a_best = z_target(s_next, N_)[0].mean(-1).argmax(-1)
+    z_t, toi_t = z_target(s_next, N_)
+    z_target = torch.stack([z_t[i].index_select(0, a_best[i]) for i in range(batch_size)]).squeeze(1)
+    z_target = r + gamma * z_target * done_flag
+    delta_ij = z_target.detach().unsqueeze(-2) - z.unsqueeze(-1)
+    
+    toi = toi.unsqueeze(0)
+    weight = torch.abs(toi - delta_ij.le(0.).float())
+    loss = F.smooth_l1_loss(z, z_target.detach(), reduction = 'none')
+    loss = torch.mean(weight * loss, 1).mean(1)
+    loss = loss.mean()
+    z_net.optimizer.zero_grad()
+    loss.backward()
+    z_net.optimizer.step()
 
 
 if __name__ == "__main__":
+
+    # test forward
+    # device  = 'cuda' if torch.cuda.is_available() else 'cpu' 
+    # test_model = IQN((4, 2, 1e-3, device))
+    # test_input = torch.rand(32, 4)
+    # print(test_model(test_input))
+
     env = gym.make("CartPole-v1")
-    # env = gym.make("Acrobot-v1")
-    # env = gym.make("Breakout-ram-v0")
     obversation = env.reset()
 
     print("Obversation space:",env.observation_space)
@@ -124,53 +110,45 @@ if __name__ == "__main__":
 
     # 超参数设置
     gamma = 0.99
-    learning_rate = 0.001
+    learning_rate = 1e-4
     output_size = 2
     state_size = 4
     memory_len = 10000
-    epoch_num = 1200   # 回合数
+    epoch_num = 3000   # 回合数
     max_steps = 400   # 最大步数
-    update_target_interval = 50 # 目标网络更新间隔
-    batch_size = 64
+    update_target_interval = 20 # 目标网络更新间隔
+    batch_size = 32
     train_flag = False
-    train_len = 1000
+    train_len = 400
+    N, N_ = 32, 32
+    device  = 'cuda' if torch.cuda.is_available() else 'cpu' 
+    epsilon = 0.8 
 
     # 初始化
-    Q_value = DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
-    Q_target =  DQN(input_size = state_size,output_size=output_size,memory_len = memory_len)
-    score_list = []
-    loss_list = []
-    optimizer = optim.Adam(Q_value.parameters(),lr = learning_rate)
-    huber = nn.SmoothL1Loss()
-
-
+    model = IQN((state_size, output_size, learning_rate, device)).to(device)
+    target_model = IQN((state_size, output_size, learning_rate, device)).to(device)
+    target_model.load_state_dict(model.state_dict())
+    replaybuffer = Replaybuffer((memory_len, device))
 
     for i in range(epoch_num):
-        epsilon = max(0.01,0.16-0.01*(i)/200)
         s = env.reset()
-        score = 0
+        score = 0.
+        epsilon = max(0.01, epsilon * 0.999)
         for j in range(max_steps):
-            env.render()
-            a = Q_value.sample_action(s,epsilon=epsilon)
-            s_next,reward,done,info = env.step(a)
+            # env.render()
+            a = model.choose_action(s, epsilon, samples_K = 32)
+            s_next, reward, done, info = env.step(a)
             done_flag = 0.0 if done else 1.0
-            Q_value.save_memory((s,a,reward/100,s_next,done_flag))
+            replaybuffer.save_memory((s, a, reward, s_next, done_flag))
             score += reward
             s = s_next
+            if len(replaybuffer.buffer) >= train_len:
+                train_flag = True
+                train(model, target_model, replaybuffer, batch_size, gamma, N, N_)
             if done:
                 break
-        score_list.append(score)
-        if len(Q_value.memory_list) >= train_len:
-            train_flag = True
-            train(Q_value,Q_target,optimizer,huber,batch_size,gamma,loss_list,Replay_time=20)
         # 更新目标网络
-        if (i+1) % update_target_interval == 0 and i > 0:
-            Q_target.load_state_dict(Q_value.state_dict())
-        print("{} epoch score: {}  training: {}".format(i+1,score,train_flag))
-
-
-
-    plot_curse(score_list,loss_list)
+        if (i + 1) % update_target_interval == 0 and i > 0:
+            target_model.load_state_dict(model.state_dict())
+        print("{} epoch score: {}  training: {}  epsilon:{:.3}".format(i+1, score, train_flag, epsilon))
     env.close()
-
-
