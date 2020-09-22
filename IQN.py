@@ -28,8 +28,8 @@ class IQN(nn.Module):
     def forward(self, inputs, toi_num = 64):
         toi = torch.FloatTensor([[np.random.uniform()] for _ in range(toi_num)]).to(self.device)
         Num = torch.FloatTensor([i for i in range(64)]).to(self.device)
-        cos_op = torch.cos(toi * Num * np.pi).unsqueeze(-1)                                        # toi_num * n(64) * 1
-        q_val_embed = self.net(inputs).unsqueeze(1)                                                 # batch * 1 * embed_opsize
+        cos_op = torch.cos(Num * toi * np.pi).unsqueeze(-1)                                        # toi_num * n(64) * 1
+        q_val_embed = self.net(inputs).view(inputs.shape[0], -1).unsqueeze(1)
         phi = F.relu(self.phi(cos_op).mean(1) + self.phi_bias.unsqueeze(0)).unsqueeze(0)                    # 1 * toi_num * embed_opsize
         z_val_embed = F.relu(self.fc(q_val_embed * phi))
         z_val = self.full_net(z_val_embed).transpose(1, 2)                                           # batch * action_size * toi
@@ -38,7 +38,7 @@ class IQN(nn.Module):
     def choose_action(self, state, epsilon, samples_K = 32):
         coin = np.random.rand()
         if coin > epsilon:
-            inputs = torch.FloatTensor(state).to(self.device)
+            inputs = torch.FloatTensor(state).to(self.device).unsqueeze(0)
             z_val = self(inputs, samples_K)[0]
             z_val = z_val.squeeze(0)
             action = int(torch.argmax(z_val.mean(-1), -1))
@@ -76,19 +76,19 @@ class Replaybuffer():
 def train(z_net, z_target, replaybuffer, batch_size, gamma, N, N_, coef_k = None, rou = None):
     s, a, r, s_next, done_flag = replaybuffer.sample_memory(batch_size)
     z, toi = z_net(s, N)
-    z = torch.stack([z[i].index_select(0, a[i]) for i in range(batch_size)]).squeeze(1)
+    z = torch.stack([z[i].index_select(0, a[i]) for i in range(batch_size)]).squeeze(1).unsqueeze(-1)
     
     a_best = z_target(s_next, N_)[0].mean(-1).argmax(-1)
     z_t, toi_t = z_target(s_next, N_)
     z_target = torch.stack([z_t[i].index_select(0, a_best[i]) for i in range(batch_size)]).squeeze(1)
-    z_target = r + gamma * z_target * done_flag
-    delta_ij = z_target.detach().unsqueeze(-2) - z.unsqueeze(-1)
+    z_target = (r + gamma * z_target * done_flag).unsqueeze(-2)
+    delta_ij = z_target.detach() - z
     
     toi = toi.unsqueeze(0)
     weight = torch.abs(toi - delta_ij.le(0.).float())
-    loss = F.smooth_l1_loss(z, z_target.detach(), reduction = 'none')
+    loss = F.smooth_l1_loss(z, z_target.detach())
     loss = torch.mean(weight * loss, 1).mean(1)
-    loss = loss.mean()
+    loss = torch.mean(torch.ones_like(r).unsqueeze(-1) * loss)
     z_net.optimizer.zero_grad()
     loss.backward()
     z_net.optimizer.step()
@@ -110,7 +110,7 @@ if __name__ == "__main__":
 
     # 超参数设置
     gamma = 0.99
-    learning_rate = 1e-4
+    learning_rate = 1e-3
     output_size = 2
     state_size = 4
     memory_len = 10000
