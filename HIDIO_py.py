@@ -27,9 +27,7 @@ class ReplayBuffer():
                 option_id_ls.append(option_id)
                 a_seq_ls.append(a_avg)
                 s_seq_ls.append(s_avg)
-            return option_id_ls,\
-                    a_seq_ls,\
-                    s_seq_ls
+            return option_id_ls, a_seq_ls, s_seq_ls
 
         elif self.name == "sche_rb":
             s0_ls, reward_acc_ls, s_next0_ls, option_id_ls = ([] for _ in range(4))
@@ -71,7 +69,7 @@ class HIDIO(nn.Module):
         super(HIDIO, self).__init__()
         self.input_size, self.output_size, self.option_num, self.mem_size, self.lr, self.device = args
         self.option_phi = Policy(args = ("option_phi", self.input_size, self.output_size, self.mem_size, self.device))
-        self.policy_sche = Policy(args = ("scheduler_policy", self.input_size + 1, self.option_num, self.mem_size, self.device))
+        self.policy_sche = Policy(args = ("scheduler_policy", self.input_size + self.output_size + 1, self.option_num, self.mem_size, self.device))
         self.optimizer_sche = optim.Adam(self.policy_sche.parameter(), self.lr)
         self.optimizer_option_phi = optim.Adam([{'params': self.option_phi.parameter()},{'params': self.persi_net.parameter()}], self.lr)
         self.sche_replay_buffer = ReplayBuffer(args = ("sche_rb", self.mem_size, self.device))
@@ -102,12 +100,27 @@ class HIDIO(nn.Module):
         for m in range(train_time):
             # scheduler training
             s0, option_id, s_next0, r_acc  = self.sche_replay_buffer.sample_batch(batch_size)
+            
+
+
 
 
 
 
             # worker training
-            option_id, a_seq, s_seq = self.option_replay_buffer.sample_batch(batch_size)
+            option_id_ls, a_seq_ls, s_seq_ls = self.option_replay_buffer.sample_batch(batch_size)
+            for option_id, a_seq, s_seq in zip(option_id_ls, a_seq_ls, s_seq_ls):
+                for option_idx, a, s_next in zip(option_id, a_seq, s_seq):
+                    inputs = a + s_next
+                    approxi_p = self.persi_net(inputs)
+                    inputs += [option_id]
+                    policy_op = self.option_phi(inputs)
+                    loss_option += -torch.log(approxi_p) + 0.5 * torch.log(policy_op)
+            self.optimizer_option_phi.zero_grad()
+            loss_option.backward()
+            self.optimizer_option_phi.step()
+
+
 
 
 
@@ -141,7 +154,7 @@ if __name__ == "__main__":
     # Rollout
     for epi_i in range(MAX_EPISODES):
         s = env.reset()
-        s_seq = [s]
+        s_seq = []
         a_seq = []
         epi_step = 0
         done = False
