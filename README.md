@@ -11,6 +11,7 @@
 <br>PPO
 
 <br>ICM DQN
+<br>ESP DQN
 <br>Robust RL(DQN)
 <br>RND PPO
 <br>RL2 
