@@ -24,13 +24,13 @@ class ReplayBuffer():
             s_ls.append(s)
             a_ls.append([a])
             r_ls.append([r])
-            F_ls.append(F)
+            F_ls.append(s)
             s_next_ls.append(s_next)
             done_ls.append([done])
         return torch.FloatTensor(s_ls).to(self.device),\
                 torch.LongTensor(a_ls).to(self.device),\
                 torch.FloatTensor(r_ls).to(self.device),\
-                F_ls,\
+                torch.FloatTensor(F_ls).to(self.device),\
                 torch.FloatTensor(s_next_ls).to(self.device),\
                 torch.FloatTensor(done_ls).to(self.device)
 
@@ -39,7 +39,7 @@ class Esp_dqn(nn.Module):
     def __init__(self, args):
         super(Esp_dqn, self).__init__()
         self.input_size, self.output_size, self.lr, self.device = args
-        self.n_dim = 32
+        self.n_dim = 4
         self.qf_net = nn.Sequential(
             nn.Linear(self.input_size + 1, 64),
             nn.ReLU(),
@@ -47,12 +47,13 @@ class Esp_dqn(nn.Module):
             nn.ReLU()
         )
         self.c_net = nn.Sequential(
-            nn.Linear(32, 32),
+            nn.Linear(self.n_dim, 32),
             nn.ReLU(),
             nn.Linear(32, 1)
         )
         self.optimizer_qf = optim.Adam(self.qf_net.parameters(), lr = self.lr)
         self.optimizer_c = optim.Adam(self.c_net.parameters(), lr = self.lr)
+        self.optimizer = optim.Adam(self.parameters(), lr = self.lr)
 
     def cal_fop_q_val(self, s, a = None):
         if a is None:
@@ -61,17 +62,18 @@ class Esp_dqn(nn.Module):
             for i in range(self.output_size):
                 a_i = torch.cat([torch.FloatTensor([i]).to(self.device).unsqueeze(0) for i in range(s.shape[0])], 0)
                 inputs = torch.cat([s, a_i], -1)
-                f_op = self.qf_net(inputs)
-                q_val = self.c_net(f_op)
-                q_val_ls.append(q_val)
-                f_op_ls.append(f_op)
-            f_op = torch.cat(f_op_ls, -1)
+                f_op_ = self.qf_net(inputs)
+                q_val_ = self.c_net(f_op_)
+                q_val_ls.append(q_val_)
+                f_op_ls.append(f_op_.unsqueeze(1))
+            f_op = torch.cat(f_op_ls, 1)
             q_val = torch.cat(q_val_ls, -1)
             max_qval, max_index = torch.max(q_val, -1)
-            max_qval = max_qval.unsqueeze(-1)
+            max_qval_end = max_qval.unsqueeze(-1)
             max_index = torch.cuda.LongTensor(max_index.unsqueeze(-1))
-            f_op = torch.gather(f_op, -1, max_index)
-            return f_op, max_qval
+            max_index_end = torch.cat([max_index for _ in range(self.n_dim)], -1).unsqueeze(-2)
+            f_op_end = torch.gather(f_op, -2, max_index_end).squeeze(-2)
+            return f_op_end, max_qval_end
         else:
             inputs = torch.cat([s, a], -1)
             f_op = self.qf_net(inputs)
@@ -100,28 +102,28 @@ class Esp_dqn(nn.Module):
 
 
     def train(self, target_model, replay_buffer, batch_size = 32, gamma = 0.98, beta = 0.98):
-        s, a, r, F_op, s_next, done = replay_buffer.sample_batch(batch_size)
+        s, a, r, F_ip, s_next, done = replay_buffer.sample_batch(batch_size)
         qf_op, q_val = self.cal_fop_q_val(s, a)
-        tqf_op, tq_val = target_model.cal_fop_q_val(s_next)
+        tqf_op, tq_val_raw = target_model.cal_fop_q_val(s_next)       
 
-        tqf_val = qf_op + gamma * tqf_op * done
+        tqf_val = F_ip + gamma * tqf_op * done  # torch.rand_like(tqf_op).to(self.device)
+        tq_val = r + gamma * tq_val_raw * done
+        
+        loss_c =  ((tq_val - q_val) ** 2).mean()
         loss_qf = ((tqf_val - qf_op) ** 2 ).mean()
 
-        tq_val = r + gamma * tq_val * done
-        loss_c =  ((tq_val - q_val) ** 2).mean()
+
         self.optimizer_c.zero_grad()
-        loss_c.backward(retain_graph=True)
+        loss_c.backward(retain_graph = True)
         self.optimizer_c.step()
- 
+
+        
         self.optimizer_qf.zero_grad()
         loss_qf.backward()
         self.optimizer_qf.step()
+        
 
-        # tq_val = r + gamma * tq_val * done
-        # loss_c =  ((tq_val - q_val) ** 2).mean()
-        # self.optimizer_c.zero_grad()
-        # loss_c.backward()
-        # self.optimizer_c.step()
+
 
 
 if __name__ == "__main__":
@@ -138,7 +140,7 @@ if __name__ == "__main__":
 
     env = gym.make("CartPole-v1")
     train_flag = False
-    epsilon = 0.9
+    epsilon = 0.8
     for epo_i in range(MAX_EPOCH):
         s = env.reset()
         done = False
@@ -152,7 +154,7 @@ if __name__ == "__main__":
             replaybuffer.save_trans((s, action, r, F_op, s_next, done))
             
             s = s_next
-            if len(replaybuffer.buffer) > 200: #10*BATCH_SIZE:
+            if len(replaybuffer.buffer) > 1000: #10*BATCH_SIZE:
                 train_flag = True
                 model.train(target_model, replaybuffer)
             if done:

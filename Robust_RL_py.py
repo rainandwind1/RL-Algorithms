@@ -89,21 +89,22 @@ if __name__ == "__main__":
     COVER_INTERVAL = 20
     MEM_LEN = 30000
     LEARNING_RATE = 1e-3
+    RENDER = True
 
     state = 'main'
     count_main = 25
     count_adver = 25
 
-    main_agent = DQN(4,2, LEARNING_RATE)
-    main_target = DQN(4,2, LEARNING_RATE)
+    main_agent = DQN(8,4, LEARNING_RATE)
+    main_target = DQN(8,4, LEARNING_RATE)
     main_target.load_state_dict(main_agent.state_dict())
 
-    adver_agent = DQN(4,2, LEARNING_RATE)
-    adver_target = DQN(4,2, LEARNING_RATE)
+    adver_agent = DQN(8,4, LEARNING_RATE)
+    adver_target = DQN(8,4, LEARNING_RATE)
     adver_target.load_state_dict(adver_agent.state_dict())
 
     memory = Memory(MEM_LEN)
-    env = gym.make("CartPole-v1")
+    env = gym.make('LunarLander-v2')
     total_step = 0
     train_flag = False
     for epo_i in range(MAX_EPOCH):
@@ -116,6 +117,8 @@ if __name__ == "__main__":
             while not done:
                 action = main_agent.choose_action(s, epsilon)
                 # print(action)
+                if RENDER:
+                    env.render() 
                 s_next, r, done, info = env.step(action)
                 done_flag = 0 if done else 1
                 memory.save_trans((s, action, r, s_next, done_flag))
@@ -138,6 +141,8 @@ if __name__ == "__main__":
         elif state == 'adver':
             while not done:
                 action = adver_agent.choose_action(s, epsilon)
+                if RENDER:
+                    env.render() 
                 s_next, r, done, info = env.step(action)
                 done_flag = 0 if done else 1
                 memory.save_trans((s, action, r, s_next, done_flag))
