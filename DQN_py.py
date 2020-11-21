@@ -82,8 +82,8 @@ def train(q_net, q_target, optimizer, losses, batch_size, gamma, loss_list, Repl
         q_t = r + gamma*qtarget_out*done_flag
 
         # 损失与优化
-        loss = losses(q_a, q_t)
-        loss_list.append(loss)
+        loss = ((q_t - q_a)**2).mean()
+        # loss_list.append(loss)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     output_size = 2
     state_size = 4
     memory_len = 10000
-    epoch_num = 1200   # 回合数
+    epoch_num = 100000   # 回合数
     max_steps = 400   # 最大步数
     update_target_interval = 50 # 目标网络更新间隔
     batch_size = 64
@@ -144,13 +144,13 @@ if __name__ == "__main__":
     huber = nn.SmoothL1Loss()
 
 
-
+    epsilon = 0.8
     for i in range(epoch_num):
-        epsilon = max(0.01,0.16-0.01*(i)/200)
+        epsilon = max(0.01,epsilon * 0.99)
         s = env.reset()
         score = 0
         for j in range(max_steps):
-            env.render()
+            # env.render()
             a = Q_value.sample_action(s,epsilon=epsilon)
             s_next,reward,done,info = env.step(a)
             done_flag = 0.0 if done else 1.0
@@ -166,7 +166,7 @@ if __name__ == "__main__":
         # 更新目标网络
         if (i+1) % update_target_interval == 0 and i > 0:
             Q_target.load_state_dict(Q_value.state_dict())
-        print("{} epoch score: {}  training: {}".format(i+1,score,train_flag))
+        print("{} epoch score: {}  training: {}  epsilon:{:.3}".format(i+1, score, train_flag, epsilon))
 
 
 

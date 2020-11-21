@@ -76,7 +76,7 @@ class CrossDQN(nn.Module):
             target_idx = random.sample(range(self.K), 1)[0]
             q_target = self.cal_qval(s_next, target_idx)
             q_target = q_target.gather(-1, a_next)
-            td_error = ((r + gamma * q_target.detach() * done - q_val)**2).mean()
+            td_error = ((r + gamma * q_target.detach() * done - q_val)**2 / (self.K ** 2)).mean()
             self.optimizer[idx].zero_grad()
             td_error.backward()
             self.optimizer[idx].step()
