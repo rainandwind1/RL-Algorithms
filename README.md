@@ -14,7 +14,8 @@
 <br>ESP DQN
 <br>Robust RL(DQN)
 <br>RND PPO
-<br>RL2 
+<br>RL2
+<br>OPAC
 
 <br>****** Distributed RL*******
 <br>IQN
