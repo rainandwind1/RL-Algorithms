@@ -16,7 +16,7 @@ class ReplayBuffer():
 
     def sample_trans(self, batch_size):
         sample_batch = random.sample(self.buffer, batch_size)
-        s_ls, a_ls, r_ls, s_next_ls, done_ls = [([] for _ in range(5))]
+        s_ls, a_ls, r_ls, s_next_ls, done_ls = ([] for _ in range(5))
         for trans in sample_batch:
             s, a, r, s_next, done_flag = trans
             s_ls.append(s)
