@@ -103,7 +103,7 @@ class TD3(nn.Module):
         q_val2 = self.critic_net2(torch.cat([s, a], -1))
         # q_target = r + gamma * self.target_critic1(torch.cat([s_next, action_next], -1)) * (1 - done)
         # q_val = self.critic_net1(torch.cat([s, a], -1))
-        critic_loss = torch.min((q_target.detach() - q_val1) ** 2, (q_target.detach() - q_val2) ** 2)
+        critic_loss = (q_target.detach() - q_val1) ** 2 + (q_target.detach() - q_val2) ** 2
 
         loss = policy_loss.mean() + critic_loss.mean()
         self.optimizer.zero_grad()
