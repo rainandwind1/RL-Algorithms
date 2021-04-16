@@ -91,11 +91,15 @@ class TD3(nn.Module):
             target.data = self.toi * raw.data + (1 - self.toi) * target.data
 
     
-    def train(self, gamma = 0.98, batch_size = 32):
+    def train(self, step, gamma = 0.98, batch_size = 32):
         s, a, r, s_next, done = self.buffer.sample_batch(batch_size)
         
-        action_vec = self.get_action(s, vec = True)
-        policy_loss = -self.critic_net1(torch.cat([s, action_vec], -1))
+        if step % 10 == 0:
+            action_vec = self.get_action(s, vec = True)
+            policy_loss = -self.critic_net1(torch.cat([s, action_vec], -1)).mean()
+            self.update_target()
+        else:
+            policy_loss = 0.
         
         action_next = self.get_tar_action(s_next, vec=True).detach()
         q_target = r + gamma * torch.min(self.target_critic1(torch.cat([s_next, action_next], -1)), self.target_critic2(torch.cat([s_next, action_next], -1))) * (1 - done)
@@ -116,10 +120,12 @@ def test_TD3():
     env = gym.make("Pendulum-v0")
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = TD3(args = (3, 2, -2, 2, True, 1e-3, device)).to(device)
+    total_step = 0
     for i in range(10000):
         s = env.reset()
         score = 0.
         for t in range(200):
+            total_step += 1
             action = model.get_action(torch.FloatTensor(s).to(device))
 
             s_next, reward, done, info = env.step(action)
@@ -127,7 +133,7 @@ def test_TD3():
             score += reward 
             s = s_next
             if len(model.buffer.buffer) > 60:
-                model.train()
+                model.train(total_step)
             if done:
                 break
         print("Epoch:{}    Score:{}".format(i+1, score))
