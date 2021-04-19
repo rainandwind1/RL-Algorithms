@@ -82,13 +82,13 @@ class TD3(nn.Module):
 
     def update_target(self):
         for raw, target in zip(self.actor_net.parameters(), self.target_actor.parameters()):
-            target.data = self.toi * raw.data + (1 - self.toi) * target.data
+            target.data.copy_(self.toi * raw.data + (1 - self.toi) * target.data)
         
         for raw, target in zip(self.critic_net1.parameters(), self.target_critic1.parameters()):
-            target.data = self.toi * raw.data + (1 - self.toi) * target.data
+            target.data.copy_(self.toi * raw.data + (1 - self.toi) * target.data)
 
         for raw, target in zip(self.critic_net2.parameters(), self.target_critic2.parameters()):
-            target.data = self.toi * raw.data + (1 - self.toi) * target.data
+            target.data.copy_(self.toi * raw.data + (1 - self.toi) * target.data)
 
     
     def train(self, step, gamma = 0.98, batch_size = 32):
