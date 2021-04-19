@@ -97,10 +97,10 @@ class DDPG(nn.Module):
     def update_target(self):
         
         for raw, target in zip(self.actor.parameters(), self.target_actor.parameters()):
-            target.data = self.toi * raw.data + (1 - self.toi) * target.data
+            target.data.copy_(self.toi * raw.data + (1 - self.toi) * target.data)
         
         for raw, target in zip(self.critic.parameters(), self.target_critic.parameters()):
-            target.data = self.toi * raw.data + (1 - self.toi) * target.data
+            target.data.copy_(self.toi * raw.data + (1 - self.toi) * target.data)
 
             
             
