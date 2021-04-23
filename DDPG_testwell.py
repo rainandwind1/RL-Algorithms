@@ -55,8 +55,8 @@ class DDPG(nn.Module):
     def get_tar_action(self, inputs, vec = False, eval_mode = False):
         raw_op = self.target_actor(inputs)
         noise = torch.rand_like(raw_op).to(self.device) if not eval_mode else 0.
-        action_vec = raw_op + noise
-        action_vec = torch.tanh(action_vec)
+        action_vec = raw_op 
+        action_vec = torch.tanh(action_vec) + noise
         if self.clamp:
             action_vec = torch.clamp(action_vec, self.action_min, self.action_high)
         if vec:
@@ -67,8 +67,8 @@ class DDPG(nn.Module):
     def get_action(self, inputs, vec = False, eval_mode = False):
         raw_op = self.actor(inputs)
         noise = torch.rand_like(raw_op).to(self.device) if not eval_mode else 0.
-        action_vec = raw_op + noise
-        action_vec = torch.tanh(action_vec)
+        action_vec = raw_op 
+        action_vec = torch.tanh(action_vec) + noise
         if self.clamp:
             action_vec = torch.clamp(action_vec, self.action_min, self.action_high)
         if vec:
