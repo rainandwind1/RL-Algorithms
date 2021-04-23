@@ -60,7 +60,7 @@ class TD3(nn.Module):
         raw_op = self.target_actor(inputs)
         noise = torch.rand_like(raw_op).to(self.device)
         action_vec = raw_op
-        action_vec = torch.tanh(action_vec)
+        action_vec = torch.tanh(action_vec) + noise
         if self.clamp:
             action_vec = torch.clamp(action_vec, self.action_min, self.action_max)
         if not vec:
@@ -72,7 +72,7 @@ class TD3(nn.Module):
         raw_op = self.actor_net(inputs)
         noise = torch.rand_like(raw_op).to(self.device) if not eval_mode else 0.
         action_vec = raw_op
-        action_vec = torch.tanh(action_vec)
+        action_vec = torch.tanh(action_vec) + noise
         if self.clamp:
             action_vec = torch.clamp(action_vec, self.action_min, self.action_max)
         if not vec:
